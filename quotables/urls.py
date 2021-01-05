@@ -6,7 +6,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    # path('users', views.UserEndpoint.as_view()),
-    # path('users/<int:pk>', views.DetailUserEndpoint.as_view()),
-    # path('login', views.UserLoginEndpoint.as_view())
+    path('users', views.UserEndpoint.as_view()),
+    path('users/<int:pk>', views.DetailUserEndpoint.as_view()),
+    path('login', views.UserLoginEndpoint.as_view()),
+    path('moods', views.MoodListEndpoint.as_view()),
+    path('categories', views.CategoryListEndpoint.as_view()),
+    path('quotes', views.QuoteListEndpoint.as_view()),
+    path('artists', views.ArtistListEndpoint.as_view()),
 ]

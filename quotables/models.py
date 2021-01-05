@@ -60,7 +60,6 @@ class Category(models.Model):
     quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
 
 
-
 class Artist(models.Model): 
     name = models.CharField(max_length=255)
     category = models.ForeignKey(
@@ -75,7 +74,7 @@ class Artist(models.Model):
 
 class Mood(models.Model): 
     name = models.CharField(max_length=255)
-    quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
+    quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
     image_url = models.FileField(
         upload_to="media/%Y/%m/%d/", blank=False, null=True
     )
@@ -83,7 +82,8 @@ class Mood(models.Model):
 
 class Quote(models.Model): 
     quote = models.TextField()
-    age = models.CharField(max_length=255)
+    song_title = models.CharField(max_length=255)
+
     artist = models.ForeignKey(
         Artist, related_name="+", 
         on_delete=models.CASCADE
