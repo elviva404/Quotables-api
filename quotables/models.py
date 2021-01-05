@@ -36,6 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name =  models.CharField(max_length=255)
     is_staff = models.BooleanField(default=False)
+    quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
 
     objects = UserProfileManager()
 
@@ -54,13 +55,50 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return String representation of user"""
         return self.email
 
+class Category(models.Model): 
+    name = models.CharField(max_length=255)
+    quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
+
+
+
+class Artist(models.Model): 
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey(
+        Category, related_name="+", 
+        on_delete=models.CASCADE
+    )
+    quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
+    profile_image_url = models.FileField(
+        upload_to="media/%Y/%m/%d/", blank=False, null=True
+    )
+
 
 class Mood(models.Model): 
     name = models.CharField(max_length=255)
+    quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
+    image_url = models.FileField(
+        upload_to="media/%Y/%m/%d/", blank=False, null=True
+    )
+
+
+class Quote(models.Model): 
+    quote = models.TextField()
     age = models.CharField(max_length=255)
-    quotes = models.ForeignKey(
-        Quote, related_name="+", on_delete=models.CASCADE
+    artist = models.ForeignKey(
+        Artist, related_name="+", 
+        on_delete=models.CASCADE
     )
-    car_photo_url = models.FileField(
-        upload_to="media/%Y/%m/%d/", blank=True, null=True
+    contributor = models.ForeignKey(
+        User, related_name="+", 
+        on_delete=models.CASCADE
     )
+    category = models.ForeignKey(
+        Category, related_name="+", 
+        on_delete=models.CASCADE
+    )
+    mood = models.ForeignKey(
+        Mood, related_name="+", 
+        on_delete=models.CASCADE
+    )
+    apple_music_url = models.URLField(max_length=255, null=True)
+    spotify_url = models.URLField(max_length=255, null=True)
