@@ -53,3 +53,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return String representation of user"""
         return self.email
+
+
+class Mood(models.Model): 
+    name = models.CharField(max_length=255)
+    age = models.CharField(max_length=255)
+    quotes = models.ForeignKey(
+        Quote, related_name="+", on_delete=models.CASCADE
+    )
+    car_photo_url = models.FileField(
+        upload_to="media/%Y/%m/%d/", blank=True, null=True
+    )
