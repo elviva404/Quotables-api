@@ -64,11 +64,12 @@ class Artist(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(
         Category, related_name="+", 
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True
     )
     quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
     profile_image_url = models.FileField(
-        upload_to="media/%Y/%m/%d/", blank=False, null=True
+        upload_to="media/%Y/%m/%d/", blank=True, null=True
     )
 
 
@@ -100,5 +101,5 @@ class Quote(models.Model):
         Mood, related_name="+", 
         on_delete=models.CASCADE
     )
-    apple_music_url = models.URLField(max_length=255, null=True)
-    spotify_url = models.URLField(max_length=255, null=True)
+    apple_music_url = models.URLField(max_length=255, blank=True, null=True)
+    spotify_url = models.URLField(max_length=255, blank=True, null=True)
