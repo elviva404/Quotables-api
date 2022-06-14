@@ -67,7 +67,7 @@ class Artist(models.Model):
         on_delete=models.CASCADE,
         blank=True
     )
-    quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
+    quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
     profile_image_url = models.FileField(
         upload_to="media/%Y/%m/%d/", blank=True, null=True
     )
