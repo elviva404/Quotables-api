@@ -65,6 +65,7 @@ class Artist(models.Model):
     category = models.ForeignKey(
         Category, related_name="+", 
         on_delete=models.CASCADE,
+        null=True,
         blank=True
     )
     quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
