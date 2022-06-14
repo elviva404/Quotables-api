@@ -121,3 +121,4 @@ USE_TZ = True
 AUTH_USER_MODEL = 'quotables.User'
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/pictures/'
