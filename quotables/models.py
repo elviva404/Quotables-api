@@ -57,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Category(models.Model): 
     name = models.CharField(max_length=255)
-    quotes = models.ManyToManyField("Quote", related_name="+", blank=False)
+    quotes = models.ManyToManyField("Quote", related_name="+", blank=True, null=True)
 
 
 class Artist(models.Model): 
@@ -70,7 +70,7 @@ class Artist(models.Model):
     )
     quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
     profile_image_url = models.FileField(
-        upload_to="media/%Y/%m/%d/", blank=True, null=True
+        upload_to="media/artist/", blank=True, null=True
     )
 
 
@@ -78,7 +78,7 @@ class Mood(models.Model):
     name = models.CharField(max_length=255)
     quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
     image_url = models.FileField(
-        upload_to="media/%Y/%m/%d/", blank=False, null=True
+        upload_to="media/mood/", blank=False, null=True
     )
 
 
