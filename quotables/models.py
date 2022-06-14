@@ -29,6 +29,9 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self.db)
 
         return user
+    
+    def __str__(self):
+        return self.name
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -55,10 +58,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return String representation of user"""
         return self.email
 
+    def __str__(self):
+        return self.name
+
 class Category(models.Model): 
     name = models.CharField(max_length=255)
     quotes = models.ManyToManyField("Quote", related_name="+", blank=True, null=True)
 
+    def __str__(self):
+        return self.name
 
 class Artist(models.Model): 
     name = models.CharField(max_length=255)
@@ -73,6 +81,8 @@ class Artist(models.Model):
         upload_to="media/artist/", blank=True, null=True
     )
 
+    def __str__(self):
+        return self.name
 
 class Mood(models.Model): 
     name = models.CharField(max_length=255)
@@ -81,6 +91,8 @@ class Mood(models.Model):
         upload_to="media/mood/", blank=False, null=True
     )
 
+    def __str__(self):
+        return self.name
 
 class Quote(models.Model): 
     quote = models.TextField()
@@ -98,9 +110,11 @@ class Quote(models.Model):
         Category, related_name="+", 
         on_delete=models.CASCADE
     )
-    mood = models.ForeignKey(
-        Mood, related_name="+", 
-        on_delete=models.CASCADE
-    )
+
+    mood = models.ManyToManyField("Mood", related_name="+", blank=False)
+
     apple_music_url = models.URLField(max_length=255, blank=True, null=True)
     spotify_url = models.URLField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.quote.split()[0]
