@@ -75,7 +75,7 @@ class QuoteSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(read_only=True)
     contributor = UserSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
-    mood = MoodSerializer(read_only=True)
+    mood = MoodSerializer(read_only=True, many=True)
 
     def create(self, validated_data):
         request = self.context['request']
