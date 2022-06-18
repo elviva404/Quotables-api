@@ -51,10 +51,13 @@ class ArtistListEndpoint(generics.ListCreateAPIView):
 
 
 class QuoteListEndpoint(generics.ListCreateAPIView):
-    queryset = Quote.objects.all()
     serializer_class = QuoteSerializer
+    queryset = Quote.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['quote', 'song_title', 'artist__name', 'contributor__name','category__name', 'mood__name']
 
-    def get(self, request, *args, **kwargs):
+    def get_queryset(self):
+        queryset = Quote.objects.all()
         mood_id = self.request.query_params.get("mood_id", None)
         genre_id = self.request.query_params.get("genre_id", None)
         artist_id = self.request.query_params.get("artist_id", None)
@@ -67,12 +70,9 @@ class QuoteListEndpoint(generics.ListCreateAPIView):
             queryset = Quote.objects.filter(category=genre)   
         elif artist_id:
             artist = Artist.objects.get(pk=artist_id)
-            queryset = Quote.objects.filter(artist=artist)              
-        else:
-            queryset = Quote.objects.all()
-        page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+            queryset = Quote.objects.filter(artist=artist) 
+        return queryset
+
 
 class CategoryListEndpoint(generics.ListCreateAPIView):
     queryset = Category.objects.all()
