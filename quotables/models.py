@@ -117,4 +117,4 @@ class Quote(models.Model):
     spotify_url = models.URLField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return self.quote.split()[0]
+        return self.quote

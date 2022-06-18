@@ -1,3 +1,5 @@
+from ast import IsNot
+from unicodedata import category
 from django.shortcuts import render
 
 from rest_framework.response import Response
@@ -52,6 +54,25 @@ class QuoteListEndpoint(generics.ListCreateAPIView):
     queryset = Quote.objects.all()
     serializer_class = QuoteSerializer
 
+    def get(self, request, *args, **kwargs):
+        mood_id = self.request.query_params.get("mood_id", None)
+        genre_id = self.request.query_params.get("genre_id", None)
+        artist_id = self.request.query_params.get("artist_id", None)
+
+        if mood_id:
+            mood = Mood.objects.get(pk=mood_id)
+            queryset = Quote.objects.filter(mood=mood)
+        elif genre_id:
+            genre = Category.objects.get(pk=genre_id)
+            queryset = Quote.objects.filter(category=genre)   
+        elif artist_id:
+            artist = Artist.objects.get(pk=artist_id)
+            queryset = Quote.objects.filter(artist=artist)              
+        else:
+            queryset = Quote.objects.all()
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 class CategoryListEndpoint(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -60,4 +81,4 @@ class CategoryListEndpoint(generics.ListCreateAPIView):
 
 class MoodListEndpoint(generics.ListCreateAPIView):
     queryset = Mood.objects.all()
-    serializer_class = CategorySerializer
+    serializer_class = MoodSerializer
