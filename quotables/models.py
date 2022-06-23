@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+from django.db.models import Q
+
 
 # Create your models here.
 class UserProfileManager(BaseUserManager):
@@ -39,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name =  models.CharField(max_length=255)
     is_staff = models.BooleanField(default=False)
-    quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
+    # quotes = models.ManyToManyField("Quote", related_name="+", blank=True)
 
     objects = UserProfileManager()
 
@@ -53,6 +55,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         """Retrive short name of user"""
         return self.name
+    
+    @property
+    def get_quote_score(self):
+        """Retrieve quote score"""
+        verified_quotes = Quote.objects.all().filter(
+                Q(is_verified=True) & Q(contributor__id=self.id)
+            ).count()
+        return verified_quotes
     
     def __str__(self):
         """Return String representation of user"""
@@ -112,6 +122,7 @@ class Quote(models.Model):
     )
 
     mood = models.ManyToManyField("Mood", related_name="+", blank=False)
+    is_verified = models.BooleanField(default=False)
 
     apple_music_url = models.URLField(max_length=255, blank=True, null=True)
     spotify_url = models.URLField(max_length=255, blank=True, null=True)

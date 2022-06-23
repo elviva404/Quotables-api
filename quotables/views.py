@@ -7,7 +7,7 @@ from rest_framework import generics
 from rest_framework import filters
 
 from quotables.models import User, Mood, Artist, Category, Quote
-from .serializers import UserSerializer, QuoteSerializer, MoodSerializer, ArtistSerializer, CategorySerializer
+from .serializers import UserSerializer, QuoteSerializer, MoodSerializer, ArtistSerializer, CategorySerializer, LeaderBoardSerializer
 
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAdminUser
@@ -82,3 +82,8 @@ class CategoryListEndpoint(generics.ListCreateAPIView):
 class MoodListEndpoint(generics.ListCreateAPIView):
     queryset = Mood.objects.all()
     serializer_class = MoodSerializer
+
+
+class LeaderBoardEndpoint(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = LeaderBoardSerializer

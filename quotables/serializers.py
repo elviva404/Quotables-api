@@ -95,3 +95,23 @@ class QuoteSerializer(serializers.ModelSerializer):
             'apple_music_url', 
             'spotify_url', 
             )
+
+
+class LeaderBoardSerializer(serializers.ModelSerializer):
+    """Serializes a user profile object"""
+
+    quote_score = serializers.SerializerMethodField()
+
+    def get_quote_score(self, obj):
+        """Retrieve quote score"""
+        verified_quotes = obj.get_quote_score
+        return verified_quotes
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'email',
+            'name',
+            'quote_score'
+            )

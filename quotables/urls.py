@@ -13,4 +13,5 @@ urlpatterns = [
     path('categories', views.CategoryListEndpoint.as_view()),
     path('quotes', views.QuoteListEndpoint.as_view()),
     path('artists', views.ArtistListEndpoint.as_view()),
+    path('leaderboard', views.LeaderBoardEndpoint.as_view()),
 ]
